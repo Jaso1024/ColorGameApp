@@ -11,7 +11,7 @@ export const GuessingUI = () => {
         return "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);})
     }
 
-    const [state, setState] = useState({color: getRandomColor(), score: 0, alert: false, alertTimeouts: []})
+    const [state, setState] = useState({color: getRandomColor(), score: 0, alert: false, alertTimeouts: [], correct: null})
     
 
     const resetColor = () => {
@@ -23,31 +23,27 @@ export const GuessingUI = () => {
             clearTimeout(timeout)
         }
     }
+
     const setScore = (correct) => {
         const newscore = correct ? state.score+1 : state.score-1
-        const newstate = {...state, color: getRandomColor(), score: newscore}
+        const newstate = {...state, color: getRandomColor(), score: newscore, correct: correct, alert: true}
         clearTimeouts()
+        setState(newstate)
+        state.alertTimeouts.push(setTimeout(() => setState(() => ({...newstate, alert: false})), 1000))
 
-        if (correct) {
-            setState(() => ({...newstate, alert: true}))
-            state.alertTimeouts.push(setTimeout(() => setState(() => ({...newstate, alert: false})), 1000))
-        }
-        else {
-            setState(newstate)
-        }
     }
-
 
     const alert = () => {
         if (state.alert){
-            return <CorrectAlert></CorrectAlert>
+            return <CorrectAlert correct={state.correct}></CorrectAlert>
         }
         else{
             return null
         }
-            
- 
-        }
+    }  
+    
+    
+    
 
     const getButtons = () => {
         const answerIndex = Math.floor(Math.random() *3)
@@ -57,8 +53,8 @@ export const GuessingUI = () => {
                 {
                     buttons.map((button, i) =>
                     i==answerIndex? 
-                    <ResponseButton hex={state.color} correct={true} setscore={setScore} score={state.score}></ResponseButton> :
-                    <ResponseButton hex={getRandomColor()} correct={false} setscore={setScore} score={state.score}></ResponseButton>)
+                    <ResponseButton key={`responsebutton${i}`} hex={state.color} correct={true} setscore={setScore} score={state.score}></ResponseButton> :
+                    <ResponseButton key={`responsebutton${i}`} hex={getRandomColor()} correct={false} setscore={setScore} score={state.score}></ResponseButton>)
                 }
             </Text>
         )
