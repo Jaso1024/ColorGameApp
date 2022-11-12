@@ -1,13 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { ColorBox } from './Components/ColorBox';
+import { GuessingUI } from './Components/GuessingUI';
 
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <ColorBox></ColorBox>
-      <StatusBar style="auto" />
+      <GuessingUI></GuessingUI>
     </View>
   );
 }

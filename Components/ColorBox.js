@@ -1,19 +1,17 @@
-import React, {useEffect} from "react";
+import React, { useState } from "react";
 import {Text, View, StyleSheet, Dimensions} from "react-native";
-import {vw, vh} from 'react-native-viewport-units';
 
-export const ColorBox = () => {
-
+export const ColorBox = (props) => {
     return (
-        <View style={styles.box}>
-        </View>
+        <View style={{...styles.box, "backgroundColor":props.color}}></View>
     )
-}
+};
 
 const styles = StyleSheet.create({
     box: {
-        backgroundColor: "red",
-        width: 30 * vw,
-        height: 25 * vh,
+        backgroundColor: null,
+        width: 250,
+        height: 150,
+        borderRadius: 15,
     }
-})
+});
